@@ -8,10 +8,13 @@
 import Foundation
 import UIKit
 
+// Method for converting HEX color code to UIColor
 func colorFromHex(hex : String) -> UIColor
 {
     return colorWithHexString(hex, alpha: 1.0)
 }
+
+
 func colorWithHexString(_ stringToConvert:String, alpha:CGFloat) -> UIColor {
 
     var cString:String = stringToConvert.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
@@ -36,6 +39,7 @@ func colorWithHexString(_ stringToConvert:String, alpha:CGFloat) -> UIColor {
 }
 
 extension UIView {
+    // Method for applying Gradient to any view
     func applyGradientColor(accentColor : String) {
         let topColor = colorFromHex(hex: accentColor)
         let bottomColor = UIColor.black.cgColor
@@ -51,25 +55,31 @@ extension UIView {
     }
 }
 
-extension UIApplication {
-    class func topViewController(base: UIViewController? = (UIApplication.shared.delegate as! AppDelegate).window?.rootViewController) -> UIViewController? {
-        if let nav = base as? UINavigationController {
-            return topViewController(base: nav.visibleViewController)
-        }
-        if let tab = base as? UITabBarController {
-            if let selected = tab.selectedViewController {
-                return topViewController(base: selected)
-            }
-        }
-        if let presented = base?.presentedViewController {
-            return topViewController(base: presented)
-        }
-        return base
-    }
-}
-
+// Heptic Feedback Generator Method
 func hepticFeedBackGenerator() {
     let feedBack = UIImpactFeedbackGenerator(style: .light)
     feedBack.prepare()
     feedBack.impactOccurred()
+}
+
+
+// Tap Gesture Action Block
+open class TapGestureActionBlock : UITapGestureRecognizer {
+    var action : (() -> Void)? = nil
+}
+
+extension UIView {
+    // Method for adding Tap Gesture to any view
+    public func addTapGesture(action: @escaping () -> Void) {
+        self.endEditing(true)
+        let tapgesture = TapGestureActionBlock(target: self, action: #selector(self.handleTap(_:)))
+        tapgesture.action = action
+        tapgesture.numberOfTapsRequired = 1
+        self.addGestureRecognizer(tapgesture)
+        self.isUserInteractionEnabled = true
+    }
+    
+    @objc public func handleTap(_ sender: TapGestureActionBlock) {
+        sender.action!()
+    }
 }

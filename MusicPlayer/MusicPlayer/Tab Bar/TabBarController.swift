@@ -11,23 +11,41 @@ class TabBarController: UITabBarController, TabBarViewDelegate {
     
     var tabBarView : TabBarView = TabBarView()
     var tabBarViewHeightConstraint: NSLayoutConstraint?
-    var globalPlayBar : GlobalPlayBar = GlobalPlayBar()
+    var isGloblaPlayerHidden : Bool = false
     
     override func loadView() {
         super.loadView()
         tabBarView = Bundle.main.loadNibNamed("TabBarView", owner: nil, options: nil)?.last as! TabBarView
-        globalPlayBar = Bundle.main.loadNibNamed("GlobalPlayBar", owner: nil)?.last as! GlobalPlayBar
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.layoutIfNeeded()
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(playBackError), name: Notification.Name.init(NOTIFCATION_NAME.PLAYBACK_ERROR), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(redirectToTabBar), name: Notification.Name.init(NOTIFCATION_NAME.NAVIGATE_TAB), object: nil)
         tabBarView.delegate = self
         addTabBarView()
-        setupGlobalPlayBar()
         setup()
         
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tabBar.frame.size.height = 120 + ((UIScreen.main.bounds.size.height >= 812) ? 30 : 0)
+        tabBar.frame.origin.y = UIScreen.main.bounds.size.height - 120 + ((UIScreen.main.bounds.size.height >= 812) ? 30 : 0)
+    }
+    
+    @objc func playBackError() {
+        DispatchQueue.main.async {
+            self.tabBarView.loaderView.stopAnimating()
+            let alert = UIAlertController(title: "Playback Error", message: "This song cant be played.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+            self.present(alert, animated: true)
+        }
+
     }
     
     
@@ -51,21 +69,26 @@ class TabBarController: UITabBarController, TabBarViewDelegate {
         var navigatonControllers = [UINavigationController]()
         let storyBoard = UIStoryboard(name: "Main", bundle: nil)
         
-        let forYouViewController = storyBoard.instantiateViewController(withIdentifier: "ForYouVC")
-        let forNavigatioController : UINavigationController = UINavigationController(rootViewController: forYouViewController)
-        navigatonControllers.append(forNavigatioController)
+//        let forYouViewController = storyBoard.instantiateViewController(withIdentifier: "ForYouVC")
+//        let forNavigatioController : UINavigationController = UINavigationController(rootViewController: forYouViewController)
+//        navigatonControllers.append(forNavigatioController)
+//        
+//        let topTracksViewController = storyBoard.instantiateViewController(withIdentifier: "TopTracksVC")
+//        let topTracksNavigationController : UINavigationController = UINavigationController(rootViewController: topTracksViewController)
+//        navigatonControllers.append(topTracksNavigationController)
         
-        let topTracksViewController = storyBoard.instantiateViewController(withIdentifier: "TopTracksVC")
-        let topTracksNavigationController : UINavigationController = UINavigationController(rootViewController: topTracksViewController)
-        navigatonControllers.append(topTracksNavigationController)
+        let homeViewController = storyBoard.instantiateViewController(withIdentifier: "HomeVC")
+        let homeNavigationController : UINavigationController = UINavigationController(rootViewController: homeViewController)
+        navigatonControllers.append(homeNavigationController)
         
         self.viewControllers = navigatonControllers;
         self.tabSelectedAtIndex(index: 0)
     }
     
     func tabSelectedAtIndex(index: Int) {
-        
-        setSelectedViewController(selectedViewController: (self.viewControllers?[index])!, tabIndex: index)
+        NotificationCenter.default.post(name: Notification.Name.init("SCROLL_VIEWCONTROLLERS"), object: nil, userInfo: ["tabIndex" : index])
+        hepticFeedBackGenerator()
+        setSelectedViewController(selectedViewController: (self.viewControllers?[0])!, tabIndex: index)
     }
     
     func setSelectedViewController(selectedViewController:UIViewController, tabIndex:Int)
@@ -74,7 +97,7 @@ class TabBarController: UITabBarController, TabBarViewDelegate {
         if self.selectedViewController == selectedViewController {
             (self.selectedViewController as! UINavigationController).popToRootViewController(animated: true)
         }else{
-            //            NotificationCenter.default.post(name: NSNotification.Name.init(NOTIFICATION.NOTIFICATION_TAB_CLICK), object: nil)
+            
         }
         super.selectedViewController = selectedViewController
         
@@ -91,35 +114,11 @@ class TabBarController: UITabBarController, TabBarViewDelegate {
         
         self.view.addConstraint(NSLayoutConstraint(item: self.tabBarView, attribute: NSLayoutConstraint.Attribute.trailing, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self.view, attribute: NSLayoutConstraint.Attribute.trailing, multiplier: 1.0, constant: 0.0))
         
-        tabBarViewHeightConstraint = self.tabBarView.heightAnchor.constraint(equalToConstant: 50 + (UIScreen.main.bounds.size.height >= 812 ? 34 : 0))
+        tabBarViewHeightConstraint = self.tabBarView.heightAnchor.constraint(equalToConstant:  120 + ((UIScreen.main.bounds.size.height >= 812) ? 30 : 0))
         tabBarViewHeightConstraint?.isActive = true
         
-        self.view.layoutIfNeeded()
-    }
-    
-    func setTabBarHidden(tabBarHidden:Bool)
-    {
-        UIView.animate(withDuration: 0.3) {
-            self.tabBarViewHeightConstraint?.constant = tabBarHidden ? 0 : 50 + (UIScreen.main.bounds.size.height >= 812 ? 34 : 0)
-            self.view.layoutIfNeeded()
-        }
-        self.tabBarView.isHidden = tabBarHidden
-        self.tabBar.isHidden = true
-    }
-    
-    func setupGlobalPlayBar() {
-        self.tabBarView.addSubview(globalPlayBar)
-        globalPlayBar.translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint.activate([
-            globalPlayBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            globalPlayBar.heightAnchor.constraint(equalToConstant: 65),
-            globalPlayBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            globalPlayBar.bottomAnchor.constraint(equalTo: self.tabBarView.topAnchor)
-        ])
-        globalPlayBar.backgroundColor = .purple
-//        globalPlayBar.backView.applyGradientColor(accentColor: "#C6C6DE")
-
+        self.view.layoutIfNeeded()
     }
     
     override func didReceiveMemoryWarning() {

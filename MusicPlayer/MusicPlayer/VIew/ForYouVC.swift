@@ -8,6 +8,7 @@
 import UIKit
 import AVFoundation
 
+
 class ForYouVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     
@@ -15,15 +16,19 @@ class ForYouVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     private var musicList : [Musics] = []
     let activityIndicatoryView  = UIActivityIndicatorView()
-    var player : AVAudioPlayer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.isNavigationBarHidden = true
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(playBackError), name: Notification.Name.init(NOTIFCATION_NAME.PLAYBACK_ERROR), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateSongStatusUI), name: Notification.Name.init(NOTIFCATION_NAME.SONG_STARTED_PLAYING), object: nil)
+        
         setupIndicatorView()
         configUI()
     }
     
+    // Setup indicator view
     func setupIndicatorView() {
         view.addSubview(activityIndicatoryView)
         activityIndicatoryView.startAnimating()
@@ -33,18 +38,45 @@ class ForYouVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         activityIndicatoryView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
     }
     
+    // Setup UI
     func configUI() {
         tblView.register(UINib(nibName: "MusicTVC", bundle: nil), forCellReuseIdentifier: "MusicTVC")
         APIManager.shared.fetchMusics { data in
             if !data.data.isEmpty {
                 self.musicList = data.data
                 DispatchQueue.main.async {
+                    
+                    // After fetching all music list, assign first song to global player view. This will not be feasible in case of larger amount of data. Instead use storage managerment to store last played song
+                    PlayerManager.shared.currentTrack = self.musicList[0]
+                    PlayerManager.shared.musicList = self.musicList
+                    PlayerManager.shared.currentTrackIndex = 0
+                    NotificationCenter.default.post(name: NSNotification.Name.init(NOTIFCATION_NAME.UPDATE_INITIAL_SONG_IN_GLOBAL_PLAYER), object: nil)
+                    
+                    // remove activity indicator when data fetched
                     self.activityIndicatoryView.stopAnimating()
                     self.activityIndicatoryView.removeFromSuperview()
                     self.tblView.reloadData()
                 }
             }
         }
+    }
+    
+    // Handle Playback error here
+    @objc func playBackError() {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: "Playback Error", message: "This song cant be played.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+            self.present(alert, animated: true)
+        }
+
+    }
+    
+    // Update Global Player View data
+    @objc func updateSongStatusUI() {
+        DispatchQueue.main.async {
+            AppDelegate().sharedDelegate().setupCurrentTrackInGlobalView()
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -67,19 +99,11 @@ class ForYouVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        PlayerManager.shared.currentTrackIndex = indexPath.row
-//        PlayerManager.shared.currentTrack = musicList[indexPath.row]
-//        GlobalPlayBar.shared.isHidden = false
-////        GlobalPlayBar.shared.setupCurrentTrackData()
-//        PlayerManager.shared.prepareToPlayTrack(musicList[indexPath.row].url)
-        
-        let vc = SongPlayerVC()
-        vc.selectedMusic = musicList[indexPath.row]
-        vc.musicList = musicList
-        vc.position = indexPath.row
-        vc.modalPresentationStyle = .overCurrentContext
-        vc.modalPresentationCapturesStatusBarAppearance = true
-        AppDelegate().sharedDelegate().tabBarController.present(vc, animated: true)
-//        self.navigationController?.present(vc, animated: true)
+        // Generate feedback when song tapped
+        hepticFeedBackGenerator()
+        PlayerManager.shared.currentTrackIndex = indexPath.row
+        PlayerManager.shared.currentTrack = musicList[indexPath.row]
+        PlayerManager.shared.musicList = musicList
+        PlayerManager.shared.prepareToPlayTrack(musicList[indexPath.row].url)
     }
 }

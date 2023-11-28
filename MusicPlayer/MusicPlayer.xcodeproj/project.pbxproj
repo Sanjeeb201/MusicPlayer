@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA10E5512B15EF5C00AF0ABA /* kConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA10E5502B15EF5C00AF0ABA /* kConstants.swift */; };
 		AAA476052B135BA8007D9678 /* SongPlayerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA476042B135BA8007D9678 /* SongPlayerVC.swift */; };
+		AAAA29812B164FA100DDC34E /* MPMediaPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAA29802B164FA100DDC34E /* MPMediaPlayerManager.swift */; };
+		AAAA29832B165F3100DDC34E /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAA29822B165F3100DDC34E /* HomeVC.swift */; };
 		AAE311F12B11B34800061E13 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE311F02B11B34800061E13 /* AppDelegate.swift */; };
 		AAE311F82B11B34800061E13 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AAE311F62B11B34800061E13 /* Main.storyboard */; };
 		AAE311FA2B11B34900061E13 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AAE311F92B11B34900061E13 /* Assets.xcassets */; };
@@ -19,8 +22,6 @@
 		AAE312152B11C6D200061E13 /* MusicTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE312132B11C6D200061E13 /* MusicTVC.swift */; };
 		AAE312162B11C6D200061E13 /* MusicTVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAE312142B11C6D200061E13 /* MusicTVC.xib */; };
 		AAE312182B11CC0600061E13 /* ImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE312172B11CC0600061E13 /* ImageManager.swift */; };
-		AAE3121A2B11EFD200061E13 /* SongPlayerScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE312192B11EFD200061E13 /* SongPlayerScreen.swift */; };
-		AAE3121C2B11F14400061E13 /* DraggableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE3121B2B11F14400061E13 /* DraggableView.swift */; };
 		AAE312202B11FEAA00061E13 /* SongsCoverImageCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE3121E2B11FEAA00061E13 /* SongsCoverImageCVC.swift */; };
 		AAE312212B11FEAA00061E13 /* SongsCoverImageCVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAE3121F2B11FEAA00061E13 /* SongsCoverImageCVC.xib */; };
 		AAF59FB52B145BC300846C5A /* PlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF59FB42B145BC300846C5A /* PlayerManager.swift */; };
@@ -28,12 +29,13 @@
 		AAF59FBA2B14D46C00846C5A /* TabBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAF59FB92B14D46C00846C5A /* TabBarView.xib */; };
 		AAF59FBC2B14D4B400846C5A /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF59FBB2B14D4B400846C5A /* TabBarController.swift */; };
 		AAF59FBE2B14D91A00846C5A /* TopTracksVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF59FBD2B14D91A00846C5A /* TopTracksVC.swift */; };
-		AAF59FC22B14E90400846C5A /* GlobalPlayBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF59FC12B14E90400846C5A /* GlobalPlayBar.swift */; };
-		AAF59FC42B14ECF100846C5A /* GlobalPlayBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAF59FC32B14ECF100846C5A /* GlobalPlayBar.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AA10E5502B15EF5C00AF0ABA /* kConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = kConstants.swift; sourceTree = "<group>"; };
 		AAA476042B135BA8007D9678 /* SongPlayerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongPlayerVC.swift; sourceTree = "<group>"; };
+		AAAA29802B164FA100DDC34E /* MPMediaPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPMediaPlayerManager.swift; sourceTree = "<group>"; };
+		AAAA29822B165F3100DDC34E /* HomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
 		AAE311ED2B11B34800061E13 /* MusicPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MusicPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAE311F02B11B34800061E13 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AAE311F72B11B34800061E13 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -47,8 +49,6 @@
 		AAE312132B11C6D200061E13 /* MusicTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicTVC.swift; sourceTree = "<group>"; };
 		AAE312142B11C6D200061E13 /* MusicTVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MusicTVC.xib; sourceTree = "<group>"; };
 		AAE312172B11CC0600061E13 /* ImageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManager.swift; sourceTree = "<group>"; };
-		AAE312192B11EFD200061E13 /* SongPlayerScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongPlayerScreen.swift; sourceTree = "<group>"; };
-		AAE3121B2B11F14400061E13 /* DraggableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableView.swift; sourceTree = "<group>"; };
 		AAE3121E2B11FEAA00061E13 /* SongsCoverImageCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongsCoverImageCVC.swift; sourceTree = "<group>"; };
 		AAE3121F2B11FEAA00061E13 /* SongsCoverImageCVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SongsCoverImageCVC.xib; sourceTree = "<group>"; };
 		AAF59FB42B145BC300846C5A /* PlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerManager.swift; sourceTree = "<group>"; };
@@ -56,8 +56,6 @@
 		AAF59FB92B14D46C00846C5A /* TabBarView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TabBarView.xib; sourceTree = "<group>"; };
 		AAF59FBB2B14D4B400846C5A /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		AAF59FBD2B14D91A00846C5A /* TopTracksVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopTracksVC.swift; sourceTree = "<group>"; };
-		AAF59FC12B14E90400846C5A /* GlobalPlayBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalPlayBar.swift; sourceTree = "<group>"; };
-		AAF59FC32B14ECF100846C5A /* GlobalPlayBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GlobalPlayBar.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,9 +122,8 @@
 		AAE312062B11B37F00061E13 /* VIew */ = {
 			isa = PBXGroup;
 			children = (
+				AAAA29822B165F3100DDC34E /* HomeVC.swift */,
 				AAE312112B11C57D00061E13 /* ForYouVC.swift */,
-				AAE312192B11EFD200061E13 /* SongPlayerScreen.swift */,
-				AAE3121B2B11F14400061E13 /* DraggableView.swift */,
 				AAA476042B135BA8007D9678 /* SongPlayerVC.swift */,
 				AAF59FBD2B14D91A00846C5A /* TopTracksVC.swift */,
 			);
@@ -140,8 +137,6 @@
 				AAE312142B11C6D200061E13 /* MusicTVC.xib */,
 				AAE3121E2B11FEAA00061E13 /* SongsCoverImageCVC.swift */,
 				AAE3121F2B11FEAA00061E13 /* SongsCoverImageCVC.xib */,
-				AAF59FC12B14E90400846C5A /* GlobalPlayBar.swift */,
-				AAF59FC32B14ECF100846C5A /* GlobalPlayBar.xib */,
 			);
 			path = XIBs;
 			sourceTree = "<group>";
@@ -152,6 +147,8 @@
 				AAE312082B11B3C500061E13 /* Utility.swift */,
 				AAE312172B11CC0600061E13 /* ImageManager.swift */,
 				AAF59FB42B145BC300846C5A /* PlayerManager.swift */,
+				AA10E5502B15EF5C00AF0ABA /* kConstants.swift */,
+				AAAA29802B164FA100DDC34E /* MPMediaPlayerManager.swift */,
 			);
 			path = AppCommon;
 			sourceTree = "<group>";
@@ -225,7 +222,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				AAF59FBA2B14D46C00846C5A /* TabBarView.xib in Resources */,
-				AAF59FC42B14ECF100846C5A /* GlobalPlayBar.xib in Resources */,
 				AAE311FD2B11B34900061E13 /* LaunchScreen.storyboard in Resources */,
 				AAE311FA2B11B34900061E13 /* Assets.xcassets in Resources */,
 				AAE312212B11FEAA00061E13 /* SongsCoverImageCVC.xib in Resources */,
@@ -246,15 +242,15 @@
 				AAF59FB82B14D44600846C5A /* TabBarView.swift in Sources */,
 				AAF59FB52B145BC300846C5A /* PlayerManager.swift in Sources */,
 				AAF59FBE2B14D91A00846C5A /* TopTracksVC.swift in Sources */,
+				AA10E5512B15EF5C00AF0ABA /* kConstants.swift in Sources */,
 				AAE312182B11CC0600061E13 /* ImageManager.swift in Sources */,
 				AAA476052B135BA8007D9678 /* SongPlayerVC.swift in Sources */,
 				AAE312202B11FEAA00061E13 /* SongsCoverImageCVC.swift in Sources */,
-				AAE3121C2B11F14400061E13 /* DraggableView.swift in Sources */,
+				AAAA29832B165F3100DDC34E /* HomeVC.swift in Sources */,
 				AAE312122B11C57D00061E13 /* ForYouVC.swift in Sources */,
-				AAF59FC22B14E90400846C5A /* GlobalPlayBar.swift in Sources */,
 				AAE312102B11C18100061E13 /* MusicModel.swift in Sources */,
-				AAE3121A2B11EFD200061E13 /* SongPlayerScreen.swift in Sources */,
 				AAF59FBC2B14D4B400846C5A /* TabBarController.swift in Sources */,
+				AAAA29812B164FA100DDC34E /* MPMediaPlayerManager.swift in Sources */,
 				AAE312092B11B3C500061E13 /* Utility.swift in Sources */,
 				AAE311F12B11B34800061E13 /* AppDelegate.swift in Sources */,
 			);
@@ -411,11 +407,13 @@
 				DEVELOPMENT_TEAM = M6Z6VZAKTT;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MusicPlayer/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Music Player";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -440,11 +438,13 @@
 				DEVELOPMENT_TEAM = M6Z6VZAKTT;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MusicPlayer/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Music Player";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

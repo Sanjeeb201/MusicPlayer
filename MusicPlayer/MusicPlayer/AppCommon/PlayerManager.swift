@@ -8,7 +8,9 @@
 import Foundation
 import UIKit
 import AVFoundation
+import MediaPlayer
 
+// Global Player Manager for handling Audiosession
 final class PlayerManager : NSObject, AVAudioPlayerDelegate {
     static let shared = PlayerManager()
     
@@ -19,6 +21,7 @@ final class PlayerManager : NSObject, AVAudioPlayerDelegate {
     
     var player : AVAudioPlayer?
     
+    // Start Audio Session to play song
     func prepareToPlayTrack(_ songUrl : String) {
         DispatchQueue.global().async {
             do {
@@ -28,9 +31,6 @@ final class PlayerManager : NSObject, AVAudioPlayerDelegate {
                 print("Session is Active")
                 self.playSong(songUrl)
             } catch {
-                let alert = UIAlertController(title: "Plaback Error", message: error.localizedDescription, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-                AppDelegate().sharedDelegate().window?.rootViewController?.present(alert, animated: true)
                 print(error)
             }
         }
@@ -38,6 +38,7 @@ final class PlayerManager : NSObject, AVAudioPlayerDelegate {
     }
     
     
+    // Prepare song data to be played
     func playSong(_ songUrl : String) {
         DispatchQueue.global().async {
             do {
@@ -47,49 +48,57 @@ final class PlayerManager : NSObject, AVAudioPlayerDelegate {
                     self.player?.prepareToPlay()
                     self.player?.delegate = self
                     self.player?.play()
+                    NotificationCenter.default.post(name: NSNotification.Name.init(NOTIFCATION_NAME.SONG_STARTED_PLAYING), object: nil)
+                    MPMediaPlayerManager.shared.updateNowPlayingInfo()
                 }
             } catch {
+                NotificationCenter.default.post(name: NSNotification.Name.init(NOTIFCATION_NAME.PLAYBACK_ERROR), object: nil)
                 print(error)
             }
         }
-
+        
+        
     }
     
+    
+    // Play song at slider value
+    @objc func playSongWithSliderValue(value : CGFloat) {
+        if let player = PlayerManager.shared.player {
+            let newPosition = TimeInterval(value)
+            player.currentTime = newPosition
+            player.play()
+        }
+    }
+
+
+    
+    // Check if Current Song finished playing
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         player.stop()
-//        NotificationCenter.default.post(name: NSNotification.Name.init(NOTIFICATION.REDIRECT_TO_HOME), object: nil)
-//        NotificationCenter.default.post(name: NSNotification.Name.init(NOTIFICATION.UPDATE_PLAY_PAUSE), object: nil)
+        NotificationCenter.default.post(name: NSNotification.Name.init(NOTIFCATION_NAME.SONG_FINISHED_PLAYING), object: nil)
         
         if let index = musicList.firstIndex(where: { $0.id == currentTrack.id }) {
             if index == musicList.count - 1 {
-                currentTrackIndex = 0
+                return
             } else {
                 currentTrackIndex = index + 1
             }
             setupCurrentSong()
+            AppDelegate().sharedDelegate().setupCurrentTrackInGlobalView()
         }
         
     }
     
-    
-    //No use of this methode
-    func activateAudioSession() {
-        do {
-            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.mixWithOthers, .allowAirPlay])
-            try AVAudioSession.sharedInstance().setActive(true)
-        }
-        catch let error {
-            print(error.localizedDescription)
-        }
-    }
-    
-    //No use of this methode
-    func deactivateAudioSession() {
-        do {
-            try AVAudioSession.sharedInstance().setActive(false)
-        }
-        catch let error {
-            print(error.localizedDescription)
+    func playPauseSong() {
+        if let isPlaying = PlayerManager.shared.player?.isPlaying {
+            if isPlaying {
+                PlayerManager.shared.player?.pause()
+            } else {
+                PlayerManager.shared.player?.play()
+            }
+            AppDelegate().sharedDelegate().setupCurrentTrackInGlobalView()
+        } else {
+            PlayerManager.shared.prepareToPlayTrack(PlayerManager.shared.currentTrack.url)
         }
     }
     
@@ -97,7 +106,7 @@ final class PlayerManager : NSObject, AVAudioPlayerDelegate {
     func playNextSong() {
         if let index = musicList.firstIndex(where: { $0.id == currentTrack.id }) {
             if index == musicList.count - 1 {
-                currentTrackIndex = 0
+                return
             } else {
                 currentTrackIndex = index + 1
             }
@@ -109,21 +118,21 @@ final class PlayerManager : NSObject, AVAudioPlayerDelegate {
     func playPreviousSong() {
         
         if let index = musicList.firstIndex(where: { $0.id == currentTrack.id }) {
-            if index == musicList.count - 1 {
-                currentTrackIndex = index - 1
+            if index == 0 {
+                return
             } else {
-                currentTrackIndex = 0
+                currentTrackIndex = index - 1
             }
             setupCurrentSong()
         }
     }
     
+    
+    
     // This function use for setup current song id and song detail
     // Ansd start playing
     func setupCurrentSong() {
         currentTrack = musicList[currentTrackIndex]
-
-//       NotificationCenter.default.post(name: NSNotification.Name.init(NOTIFICATION.UPDATE_MUSIC_SCREEN), object: nil)
         prepareToPlayTrack(currentTrack.url)
     }
 

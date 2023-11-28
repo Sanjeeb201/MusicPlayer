@@ -22,7 +22,6 @@ struct APIManager {
             if error == nil && data != nil {
                 do {
                     let results = try JSONDecoder().decode(MusicList.self, from: data!)
-                    print(results.data)
                     completion(results)
                 } catch {
                     print(error.localizedDescription)

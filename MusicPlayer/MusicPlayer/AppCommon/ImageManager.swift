@@ -12,7 +12,7 @@ class ImageLoadView : UIImageView {
     
     let cachedImage = NSCache<AnyObject, UIImage>()
     
-    
+    // Method for cacheing Images for reuse without fetching from server again
     func getImage(imageURL : URL) {
         
         if let cachedImage = self.cachedImage.object(forKey: imageURL as AnyObject) {

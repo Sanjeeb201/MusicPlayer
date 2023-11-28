@@ -6,25 +6,34 @@
 //
 
 import UIKit
+import AVKit
+import MediaPlayer
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var tabBarController : TabBarController!
-    var globalPlayBar : GlobalPlayBar = GlobalPlayBar()
+    var isFirstTime : Bool = true
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        
         initialiseTabBarController()
+        
+        MPMediaPlayerManager.shared.requestRemoteCommandHandling() // Request for remote controlling Event controll
+        MPMediaPlayerManager.shared.setupRemoteTransportControls() // Track all remote event and take appropiate action
         return true
     }
     
     func initialiseTabBarController() {
-        var storyBoard = UIStoryboard(name: "Main", bundle: nil)
+        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
         tabBarController = storyBoard.instantiateViewController(withIdentifier: "TabBarController") as? TabBarController
+        
         window?.rootViewController = tabBarController
+    }
+    
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        setupCurrentTrackInGlobalView()
     }
     
 
@@ -39,31 +48,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return UIApplication.shared.delegate as! AppDelegate
     }
     
-    func showTabBar() {
-        if tabBarController != nil {
-            tabBarController.setTabBarHidden(tabBarHidden: false)
-        }
-    }
     
-    func hideTabBar() {
+    func setupCurrentTrackInGlobalView() {
         if tabBarController != nil {
-            tabBarController.setTabBarHidden(tabBarHidden: true)
+            tabBarController.tabBarView.setupCurrentTrackData()
         }
-    }
-    
-    //MARK:- set music data
-    func setMusicDataInGlobalView()
-    {
-        GlobalPlayBar.shared.setupCurrentTrackData()
-        
-//        if let musicPlayer = PlayerManager.shared.player{
-//            if musicPlayer.isPlaying{
-//                
-//            }
-//            else{
-//                globalPlayBar.playPauseBtn.isSelected = false
-//            }
-//        }
     }
 
 
