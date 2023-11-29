@@ -3,7 +3,7 @@
 ## Key Features
 
 * MPMedia Player Item in Lock Screen and Control Center
-* MP Remote Control Command Hanled
+* MP Remote Control Command Handled
 * Horizontal Tab Navigation
 * Heptic Feedback for Play/Pause, Tab Navigation
 * Play/Pause, Next/Previous Functionality
