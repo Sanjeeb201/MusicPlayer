@@ -361,6 +361,7 @@ class SongPlayerVC: UIViewController {
 
     }
     
+    // Update UI when song is puased 
     @objc func songPausedUI() {
         DispatchQueue.main.async {
             self.playPauseBtn.isSelected = !self.playPauseBtn.isSelected

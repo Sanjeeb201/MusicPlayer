@@ -69,27 +69,10 @@ class TabBarView: UIView {
         NotificationCenter.default.addObserver(self, selector: #selector(updateSongStatusUI), name: Notification.Name.init(NOTIFCATION_NAME.SONG_STARTED_PLAYING), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(songFinishedPlaying), name: NSNotification.Name.init(NOTIFCATION_NAME.SONG_FINISHED_PLAYING), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(songPausedUI), name: NSNotification.Name.init(NOTIFCATION_NAME.SONG_PAUSED), object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(redirectToTabBar), name: Notification.Name.init(NOTIFCATION_NAME.NAVIGATE_TAB), object: nil)
         
         setUpLoaderView()
         initialize()
     }
-    
-//    @objc func redirectToTabBar(noti : Notification)
-//    {
-//        if let dict : [String : Any] = noti.userInfo as? [String : Any]
-//        {
-//            if let index : Int = dict["tabIndex"] as? Int
-//            {
-//                if index == 0 {
-//                    tabBtnClicked(forYouTabBtn)
-//                } else {
-//                    tabBtnClicked(topTracksTabBtn)
-//                }
-//                
-//            }
-//        }
-//    }
     
     func setUpLoaderView() {
         playPauseBtn.addSubview(loaderView)
@@ -100,6 +83,7 @@ class TabBarView: UIView {
         loaderView.transform = CGAffineTransform(scaleX: 1.4, y: 1.4)
     }
     
+    // Setup Current Track in Global Play Bar View
     @objc func setupCurrentTrackData() {
         DispatchQueue.main.async {
             self.loaderView.color = colorFromHex(hex: PlayerManager.shared.currentTrack.accent)
@@ -109,6 +93,11 @@ class TabBarView: UIView {
             if let player = PlayerManager.shared.player {
                 let isPlaying = player.isPlaying
                 self.playPauseBtn.isSelected = isPlaying
+            }
+            if PlayerManager.shared.currentTrackIndex == PlayerManager.shared.musicList.count - 1 {
+                self.nextBtn.isEnabled = false
+            } else {
+                self.nextBtn.isEnabled = true
             }
         }
         
@@ -153,6 +142,7 @@ class TabBarView: UIView {
     }
 
     @objc func changeSong() {
+        hepticFeedBackGenerator()
         PlayerManager.shared.player?.stop()
         playPauseBtn.isSelected = false
         PlayerManager.shared.playNextSong()

@@ -21,7 +21,6 @@ class ForYouVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         super.viewDidLoad()
         self.navigationController?.isNavigationBarHidden = true
         
-        NotificationCenter.default.addObserver(self, selector: #selector(playBackError), name: Notification.Name.init(NOTIFCATION_NAME.PLAYBACK_ERROR), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateSongStatusUI), name: Notification.Name.init(NOTIFCATION_NAME.SONG_STARTED_PLAYING), object: nil)
         
         setupIndicatorView()
@@ -60,16 +59,7 @@ class ForYouVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             }
         }
     }
-    
-    // Handle Playback error here
-    @objc func playBackError() {
-        DispatchQueue.main.async {
-            let alert = UIAlertController(title: "Playback Error", message: "This song cant be played.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-            self.present(alert, animated: true)
-        }
 
-    }
     
     // Update Global Player View data
     @objc func updateSongStatusUI() {
@@ -101,9 +91,11 @@ class ForYouVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Generate feedback when song tapped
         hepticFeedBackGenerator()
+        PlayerManager.shared.player?.stop()
         PlayerManager.shared.currentTrackIndex = indexPath.row
         PlayerManager.shared.currentTrack = musicList[indexPath.row]
         PlayerManager.shared.musicList = musicList
         PlayerManager.shared.prepareToPlayTrack(musicList[indexPath.row].url)
+        AppDelegate().sharedDelegate().setupCurrentTrackInGlobalView()
     }
 }
